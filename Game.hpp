@@ -22,6 +22,7 @@ public:
     void displayGameState() const;
     void printWinner();
     std::vector<Player> getPlayers();
+    int getCurrentPlayerIndex();
 };
 
 #endif // GAME_H

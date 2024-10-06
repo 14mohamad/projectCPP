@@ -164,11 +164,11 @@ void Street::visit(Player& player) {
         return;
     }
     //unowned
-    std::cout << "This street is unowned, would you like to purchase it? (Y/N)" << std::endl;
+    std::cout << "This street is unowned, would you like to purchase it? (y/n)" << std::endl;
     std::string input;
     std::cin >> input;
     if(input == "y"){
-        if(player.getMoney() <= price){
+        if(player.getMoney() >= price){
             player.pay(price);
             setOwner(&player);
             return;
@@ -242,11 +242,11 @@ void Train::visit(Player& player) {
     }
     //unowned
     if(!isOwned()){
-        std::cout << "This train is unowned, would you like to purchase it? (Y/N)" << std::endl;
+        std::cout << "This train is unowned, would you like to purchase it? (y/n)" << std::endl;
         std::string input;
         std::cin >> input;
         if(input == "y"){
-            if(player.getMoney() <= price){
+            if(player.getMoney() >= price){
                 player.pay(price);
                 setOwner(&player);
                 return;

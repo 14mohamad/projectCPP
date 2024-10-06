@@ -1,8 +1,8 @@
 CXX = g++
 CXXFLAGS = -std=c++11 -Wall -g
 TARGET = monopoly
-OBJS = main.o Game.o Board.o Player.o Dice.o Space.o
-SOURCES = main.cpp Game.cpp Board.cpp Player.cpp Dice.cpp Space.cpp
+OBJS = main.o Game.o Board.o Player.o Dice.o Space.o GUI.o
+SOURCES = main.cpp Game.cpp Board.cpp Player.cpp Dice.cpp Space.cpp GUI.cpp
 
 all: $(TARGET)
 

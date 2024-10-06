@@ -2,8 +2,8 @@
 #include "Space.hpp"
 #include "Board.hpp"
 // Player constructor
-Player::Player(std::string name, Board& board) 
-    : name(name), board(board), outOfJailCard(false), jailed(false), bankrupt(false), money(1500), trains(0), currentPosition(0) {}
+Player::Player(std::string name, Board& board, sf::Color playerColor)
+    : name(name), board(board), outOfJailCard(false), jailed(false), bankrupt(false), money(1500), trains(0), currentPosition(0), color(playerColor) {}
 
 // Get the player's name
 std::string Player::getName() const {
@@ -116,4 +116,12 @@ void Player::freeFromJail(){
 
 bool Player::isBankrupt() const{
     return bankrupt;
+}
+
+unsigned int Player::getPosition() const{
+    return currentPosition;
+}
+
+sf::Color Player::getColor() const {
+    return color;
 }

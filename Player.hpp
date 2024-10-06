@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <SFML/Graphics.hpp> // Include for sf::Color
 class Space;
 class Board;
 class Player {
@@ -16,8 +17,9 @@ private:
     int money;
     int trains;
     unsigned int currentPosition;
+    sf::Color color; 
 public:
-    Player(std::string name, Board& board);
+    Player(std::string name, Board& board, sf::Color playerColor);
     std::string getName() const;
     void move(int steps);
     void collect(int money);
@@ -34,6 +36,8 @@ public:
     bool isJailed();
     void freeFromJail();
     bool isBankrupt() const;
+    unsigned int getPosition() const;
+    sf::Color getColor() const;
 };
 
 #endif // PLAYER_H
