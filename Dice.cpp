@@ -1,5 +1,5 @@
 #include "Dice.hpp"
-
+#include <iostream>
 Dice::Dice():die1(0), die2(0) {
     std::srand(static_cast<unsigned int>(std::time(nullptr)));
 }
@@ -9,6 +9,7 @@ void Dice::roll() {
     int random = std::rand() % 36;
     die1 = random / 6 + 1;
     die2 = random % 6 + 1;
+    std::cout << "You have rolled " << die1 << " and " << die2 << std::endl;
 }
 
 int Dice::getTotal() const {

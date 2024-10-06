@@ -2,6 +2,7 @@
 #define SPACE_H
 
 #include <string>
+#include <vector>
 #include <iostream>
 #include <cmath>
 
@@ -11,16 +12,18 @@ class Space {
 public:
     Space(const std::string& label, bool utility, bool railroad);
     virtual ~Space() = default;
-    // Pure virtual function
-    virtual void visit(Player& player) = 0;
     bool isOwned();
     Player* getOwner();
     void setOwner(Player* player);
+    void removeOwner();
     bool isUtility();
     bool isRailroad();
     std::string getLabel();
+    // Pure virtual functions
+    virtual void visit(Player& player) = 0;
     virtual int getRepairs() = 0;
     virtual int getStreetRepairs() = 0;
+    virtual void leaveSpace() = 0;
     
 private:
     std::string label;
@@ -38,11 +41,12 @@ public:
     void visit(Player& player) override;
     int getRepairs() override;
     int getStreetRepairs() override;
+    void leaveSpace() override;
 };
 
 class Street : public Space {
 private:
-    struct StreetGroup& StreetGroup;
+    std::vector<Space*> StreetGroup;
     int price;
     int rent;
     int houses;
@@ -51,12 +55,13 @@ private:
     int hotelPrice;
 
 public:
-    Street(const std::string& name, int price, int rent, int housePrice, int hotelPrice, struct StreetGroup& streetGroup);
+    Street(const std::string& name, int price, int rent, int housePrice, int hotelPrice, std::vector<Space*>& streetGroup);
     void visit(Player& player) override;
     void buildHouse(Player& player);
     int getRent() const;
     int getRepairs() override;
     int getStreetRepairs() override;
+    void leaveSpace() override;
 };
 
 class Train : public Space {
@@ -68,6 +73,7 @@ public:
     void visit(Player& player) override;
     int getRepairs() override;
     int getStreetRepairs() override;
+    void leaveSpace() override;
 };
 
 
@@ -78,6 +84,7 @@ public:
     void visit(Player& player) override;
     int getRepairs() override;
     int getStreetRepairs() override;
+    void leaveSpace() override;
 };
 
 
@@ -88,6 +95,7 @@ public:
     void visit(Player& player) override;
     int getRepairs() override;
     int getStreetRepairs() override;
+    void leaveSpace() override;
 };
 
 class GoToJail : public Space {
@@ -97,8 +105,8 @@ public:
     void visit(Player& player) override;
     int getRepairs() override;
     int getStreetRepairs() override;
+    void leaveSpace() override;
 };
-
 
 class FreeParking: public Space {
 private:
@@ -107,6 +115,57 @@ public:
     void visit(Player& player) override;
     int getRepairs() override;
     int getStreetRepairs() override;
+    void leaveSpace() override;
+};
+
+class CommunityChest: public Space {
+private:
+public:
+    CommunityChest(const std::string& name);
+    void visit(Player& player) override;
+    int getRepairs() override;
+    int getStreetRepairs() override;
+    void leaveSpace() override;
+};
+
+class IncomeTax: public Space {
+private:
+public:
+    IncomeTax(const std::string& name);
+    void visit(Player& player) override;
+    int getRepairs() override;
+    int getStreetRepairs() override;
+    void leaveSpace() override;
+};
+
+class ElectricCompany: public Space {
+private:
+public:
+    ElectricCompany(const std::string& name);
+    void visit(Player& player) override;
+    int getRepairs() override;
+    int getStreetRepairs() override;
+    void leaveSpace() override;
+};
+
+class WaterWorks: public Space {
+private:
+public:
+    WaterWorks(const std::string& name);
+    void visit(Player& player) override;
+    int getRepairs() override;
+    int getStreetRepairs() override;
+    void leaveSpace() override;
+};
+
+class LuxuryTax: public Space {
+private:
+public:
+    LuxuryTax(const std::string& name);
+    void visit(Player& player) override;
+    int getRepairs() override;
+    int getStreetRepairs() override;
+    void leaveSpace() override;
 };
 
 
