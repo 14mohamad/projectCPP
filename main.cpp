@@ -11,7 +11,7 @@ int main() {
     
     for (int i = 0; i < numPlayers; ++i) {
         std::string name;
-        std::cout << "Enter name for player " << (i + 1) << ": ";
+        std::cout << "Enter name for player " << (i + 1) << ": ";
         std::cin >> name;
         playerNames.push_back(name);
     }

@@ -20,10 +20,10 @@ public:
     bool isRailroad();
     std::string getLabel();
     // Pure virtual functions
-    virtual void visit(Player& player) = 0;
-    virtual int getRepairs() = 0;
-    virtual int getStreetRepairs() = 0;
-    virtual void leaveSpace() = 0;
+    virtual void visit(Player& player) = 0; //visit this space and buy a house/pay rent/pick a chance card etc...
+    virtual int getRepairs() = 0; //get the price of general repairs for this space (for streets)
+    virtual int getStreetRepairs() = 0; //get the price of expensive street repairs for this space
+    virtual void leaveSpace() = 0; //leave the current space and make it available for purchase
     
 private:
     std::string label;
@@ -57,8 +57,8 @@ private:
 public:
     Street(const std::string& name, int price, int rent, int housePrice, int hotelPrice, std::vector<Space*>& streetGroup);
     void visit(Player& player) override;
-    void buildHouse(Player& player);
-    int getRent() const;
+    void buildHouse(Player& player); //options for buying a house/hotel
+    int getRent() const; //get the price of rent for this street
     int getRepairs() override;
     int getStreetRepairs() override;
     void leaveSpace() override;

@@ -6,12 +6,14 @@ Board::Board():spaces(), streets() {}
 // Destructor
 Board::~Board() {
     // Free dynamically allocated spaces
+    // חללים שהוקצו באופן דינמי חינם
     for (auto space : spaces) {
         delete space;
     }
 }
 
 // Initialize the board with spaces
+// אתחול הלוח עם רווחים
 void Board::initialize(Game* game) {
     spaces.push_back(new Go("Go"));
     spaces.push_back(new Street("MEDITERRANEAN AVENUE", 60, 50, 100, 200, streets[0]));
@@ -59,6 +61,7 @@ void Board::initialize(Game* game) {
 }
 
 // Get space by index
+// קבל מקום לפי אינדקס
 Space* Board::getSpace(int index) {
     if (index >= 0 && (unsigned int)index < spaces.size()) {
         return spaces[index];
@@ -67,6 +70,7 @@ Space* Board::getSpace(int index) {
 }
 
 // Get index space by name
+// קבל שטח אינדקס לפי שם
 int Board::getSpaceIndex(std::string name){
     for(unsigned int i = 0; i < spaces.size(); i++){
         if(spaces[i]->getLabel() == name){

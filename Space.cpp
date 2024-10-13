@@ -7,11 +7,13 @@ Space::Space(const std::string& label, bool utility, bool railroad)
     : label(label), owner(nullptr), ownedSpace(false), utility(utility), railroad(railroad) {}
 
 // Check if the space is owned
+// בדוק אם השטח הוא בבעלות
 bool Space::isOwned() {
     return ownedSpace;
 }
 
 // Get the owner of the space
+// קבלו את הבעלים של החלל
 Player* Space::getOwner() {
     return owner;
 }
@@ -26,11 +28,13 @@ void Space::removeOwner(){
 }
 
 // Check if the space is a utility
+// בדוק אם השטח הוא כלי עזר
 bool Space::isUtility() {
     return utility;
 }
 
 // Check if the space is a railroad
+// בדוק אם החלל הוא מסילת ברזל
 bool Space::isRailroad() {
     return railroad;
 }
@@ -38,10 +42,12 @@ std::string Space::getLabel(){
     return label;
 }
 // Chance constructor
+// בנאי סיכוי
 Chance::Chance(const std::string& name, Game* game)
     : Space(name, false, false), game(game) {}
 
 // Visit function for Chance space
+// ביקור בפונקציה עבור מרחב צ'אנס
 void Chance::visit(Player& player) {
     std::cout << player.getName() << " visited chance." << std::endl;
     int randomChance = rand() % 16;
@@ -137,14 +143,17 @@ int Chance::getStreetRepairs() {
 void Chance::leaveSpace() {}
 
 // Street constructor
+// בונה רחובות
 Street::Street(const std::string& name, int price, int rent, int housePrice, int hotelPrice, std::vector<Space*>& StreetGroup)
     : Space(name, false, false), StreetGroup(StreetGroup), price(price), rent(rent), houses(0), hotels(0), housePrice(housePrice), hotelPrice(hotelPrice) {
         StreetGroup.push_back(this);
     }
 
 // Visit function for Street space
+// פונקציית ביקור עבור שטח רחוב
 void Street::visit(Player& player) {
     std::cout << player.getName() << " has visited " << getLabel() << std::endl;
+    //הבעלים לא ביקר
     if(isOwned() && getOwner()->getName() != player.getName()){ //the owner didn't visit
         std::cout << getLabel() << " is owned by " << getOwner()->getName() << " and " << player.getName() << " has to pay rent." << std::endl;
         int rentPrice = rent * std::pow(2, houses) * std::pow(16, hotels);
@@ -153,6 +162,7 @@ void Street::visit(Player& player) {
         std::cout << player.getName() << " paid " << rentPrice << " as rent." << std::endl;
         return;
     }
+    //הבעלים ביקר
     if(isOwned()){ //the owner visited
         for(auto& street: StreetGroup){
             if(!street->isOwned() || street->getOwner()->getName() != player.getName()){
@@ -163,6 +173,7 @@ void Street::visit(Player& player) {
         buildHouse(player);
         return;
     }
+    //לא בבעלות
     //unowned
     std::cout << "This street is unowned, would you like to purchase it? (y/n)" << std::endl;
     std::string input;
@@ -186,6 +197,7 @@ int Street::getStreetRepairs() {
 }
 
 // Build a house on the street
+// לבנות בית ברחוב
 void Street::buildHouse(Player& player) {
     if(houses == 4){
         std::cerr << "Would you like to upgrade the houses to a hotel?" << std::endl;
@@ -216,21 +228,27 @@ void Street::buildHouse(Player& player) {
 }
 
 // Get the rent for the street
+// קבל את שכר הדירה עבור הרחוב
 int Street::getRent() const {
+    // אולי כדאי להתאים את זה על סמך בתים/מלונות
     return rent; // You might want to adjust this based on houses/hotels
 }
 
 void Street::leaveSpace() {
     houses = 0;
     hotels = 0;
+    removeOwner();
 }
 
 // Train constructor
+// בונה רכבת
 Train::Train(const std::string& name, int price)
     : Space(name, false, true), price(price) {}
 
 // Visit function for Train space
+// פונקציית ביקור עבור שטח רכבת
 void Train::visit(Player& player) {
+    //הבעלים לא ביקר
     std::cout << player.getName() << " has visited " << getLabel() << std::endl;
     if(isOwned() && getOwner()->getName() != player.getName()){ //the owner didn't visit
         std::cout << getLabel() << " is owned by " << getOwner()->getName() << " and " << player.getName() << " has to pay rent." << std::endl;
@@ -241,6 +259,7 @@ void Train::visit(Player& player) {
         return;
     }
     //unowned
+    //לא בבעלות
     if(!isOwned()){
         std::cout << "This train is unowned, would you like to purchase it? (y/n)" << std::endl;
         std::string input;
@@ -264,13 +283,17 @@ int Train::getStreetRepairs() {
     return 0;
 }
 
-void Train::leaveSpace() {}
+void Train::leaveSpace() {
+    removeOwner();
+}
 
 // Go constructor
+// עבור לבנאי
 Go::Go(const std::string& name)
     : Space(name, false, false) {}
 
 // Visit function for Go space
+// פונקציית ביקור עבור מרחב Go
 void Go::visit(Player& player) {
     std::cout << player.getName() << " has visited " << getLabel() << " and collected $200!" << std::endl;
     player.collect(200);
@@ -286,10 +309,12 @@ int Go::getStreetRepairs() {
 void Go::leaveSpace() {}
 
 // Jail constructor
+// בונה כלא
 Jail::Jail(const std::string& name)
     : Space(name, false, false) {}
 
 // Visit function for Jail space
+// פונקציית ביקור עבור שטח בכלא
 void Jail::visit(Player& player) {
     if(!player.isJailed()){
         std::cout << player.getName() << " has visited " << getLabel() << std::endl;
@@ -313,10 +338,12 @@ int Jail::getStreetRepairs() {
 
 void Jail::leaveSpace() {}
 // GoToJail constructor
+// בנאי GoToJail
 GoToJail::GoToJail(const std::string& name)
     : Space(name, false, false) {}
 
 // Visit function for GoToJail space
+// פונקציית ביקור עבור שטח GoToJail
 void GoToJail::visit(Player& player) {
     std::cout << player.getName() << " has visited " << getLabel() << std::endl;
     player.goToJail();
@@ -332,10 +359,12 @@ int GoToJail::getStreetRepairs() {
 void GoToJail::leaveSpace() {}
 
 // FreeParking constructor
+// קונסטרוקטור FreeParking
 FreeParking::FreeParking(const std::string& name)
     : Space(name, false, false) {}
 
 // Visit function for Free Parking space
+// פונקציית ביקור עבור מקום חניה חינם
 void FreeParking::visit(Player& player) {
     std::cout << player.getName() << " has visited " << getLabel() << std::endl;
 }
@@ -350,10 +379,12 @@ int FreeParking::getStreetRepairs() {
 void FreeParking::leaveSpace() {}
 
 // CommunityChest constructor
+// בונה תיבה קהילתית
 CommunityChest::CommunityChest(const std::string& name)
     : Space(name, false, false) {}
 
 // Visit function for Community Chest space
+// פונקציית ביקור עבור שטח תיבת קהילה
 void CommunityChest::visit(Player& player) {
     std::cout << player.getName() << " has visited " << getLabel() << " and received $50!" << std::endl;
     player.collect(50);
@@ -369,10 +400,12 @@ int CommunityChest::getStreetRepairs() {
 void CommunityChest::leaveSpace() {}
 
 // IncomeTax constructor
+// בונה מס הכנסה
 IncomeTax::IncomeTax(const std::string& name)
     : Space(name, false, false) {}
 
 // Visit function for Income Tax space
+// פונקציית ביקור עבור שטח מס הכנסה
 void IncomeTax::visit(Player& player) {
     std::cout << player.getName() << " has visited " << getLabel() << " and paid $200" << std::endl;
     player.pay(200);
@@ -389,10 +422,12 @@ void IncomeTax::leaveSpace() {}
 
 
 // ElectricCompany constructor
+// קונסטרוקטור חברת חשמל
 ElectricCompany::ElectricCompany(const std::string& name)
     : Space(name, false, false) {}
 
 // Visit function for Electric Company space
+// פונקציית ביקור בחלל חברת חשמל
 void ElectricCompany::visit(Player& player) {
     std::cout << player.getName() << " has visited " << getLabel() << " and has to pay $150" << std::endl;
     player.pay(150);
@@ -409,10 +444,12 @@ void ElectricCompany::leaveSpace() {}
 
 
 // WaterWorks constructor
+// קונסטרוקטור מפעלי מים
 WaterWorks::WaterWorks(const std::string& name)
     : Space(name, false, false) {}
 
 // Visit function for Water Works space
+// פונקציית ביקור עבור חלל מפעלי מים
 void WaterWorks::visit(Player& player) {
     std::cout << player.getName() << " has visited " << getLabel() << " and has to pay $150" << std::endl;
     player.pay(150);
@@ -428,10 +465,12 @@ int WaterWorks::getStreetRepairs() {
 void WaterWorks::leaveSpace() {}
 
 // LuxuryTax constructor
+// בונה מס יוקרה
 LuxuryTax::LuxuryTax(const std::string& name)
     : Space(name, false, false) {}
 
 // Visit function for Luxury Tax space
+// פונקציית ביקור עבור שטח מס יוקרה
 void LuxuryTax::visit(Player& player) {
     std::cout << player.getName() << " has visited " << getLabel() << "and has to pay $100" << std::endl;
     player.pay(100);

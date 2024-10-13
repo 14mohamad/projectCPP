@@ -14,6 +14,7 @@ const std::vector<sf::Color> playerColors = {
     sf::Color::Black
 };
 // Constructor that initializes the game with player names
+// קונסטרוקטור המאתחל את המשחק עם שמות שחקנים
 Game::Game(const std::vector<std::string>& playerNames) : currentPlayerIndex(0) {
     int i = 0;
     for (const auto& name : playerNames) {
@@ -24,9 +25,11 @@ Game::Game(const std::vector<std::string>& playerNames) : currentPlayerIndex(0) 
 }
 
 // Start the game loop
+// התחל את לולאת המשחק
 void Game::start() {
     GUI gui;
     // Main game loop
+    // לולאת משחק ראשית
     while (gui.window.isOpen() && !isGameOver()) {
         gui.handleEvents();
         gui.render(players);
@@ -41,6 +44,7 @@ void Game::start() {
 }
 
 // Play a turn for the current player
+// שחק תור עבור השחקן הנוכחי
 void Game::playTurn() {
     Player& currentPlayer = players[currentPlayerIndex];
     std::cout << currentPlayer.getName() << "'s turn." << std::endl;
@@ -54,10 +58,12 @@ void Game::playTurn() {
     }
     int steps = dice.getTotal();
     currentPlayer.move(steps);
+    // עבור לשחקן הבא
     currentPlayerIndex = (currentPlayerIndex + 1) % players.size(); // Move to the next player
 }
 
 // Check if the game is over
+// בדוק אם המשחק נגמר
 bool Game::isGameOver() const {
     int activePlayers = 0;
     for (const auto& player : players) {
@@ -68,10 +74,12 @@ bool Game::isGameOver() const {
             activePlayers++;
         }
     }
+    // המשחק נגמר אם שחקן אחד פעיל או לא
     return activePlayers <= 1; // Game over if one or no players are active
 }
 
 // Display the current state of the game
+// הצג את המצב הנוכחי של המשחק
 void Game::displayGameState() const {
     for (const auto& player : players) {
         std::cout << player.getName() << ": $" << player.getMoney()  << " current position: " << player.getPosition() << std::endl;

@@ -28,6 +28,7 @@ void GUI::handleEvents() {
 
 void GUI::render(std::vector<Player> players) {
     window.clear();
+    // צייר את תמונת הרקע
     window.draw(backgroundSprite); // Draw the background image
     drawPlayers(players);
     window.display();
@@ -35,6 +36,7 @@ void GUI::render(std::vector<Player> players) {
 
 void GUI::drawBoard() {
     // Load and draw the game board here (replace with actual drawing logic)
+    // טען וצייר את לוח המשחק כאן (החלף בהיגיון ציור בפועל)
     sf::RectangleShape board(sf::Vector2f(600, 600));
     board.setFillColor(sf::Color::Green);
     window.draw(board);
@@ -42,13 +44,18 @@ void GUI::drawBoard() {
 
 void GUI::drawPlayers(std::vector<Player> players) {
     // Loop through each player to draw their position
+    // עברו בלולאה בין כל שחקן כדי לצייר את המיקום שלו
     for (const auto& player : players) {
+        // קבל את המיקום הנוכחי של השחקן
         unsigned int position = player.getPosition(); // Get player's current position
         int x = 0, y = 0;
         int gap = 75;
         // Determine x and y based on the position, moving clockwise
+        // קבע את x ו-y על סמך המיקום, נעים בכיוון השעון
         if (position > 0 && position <= 9) { // Bottom row (0 to 9)
+            // מרכז כל חלל
             x = 900 - (position * gap + gap); // Center of each space
+            // גובה קבוע עבור השורה התחתונה
             y = 900 - gap; // Fixed height for the bottom row
         } else if (position > 10 && position <= 18) { // Right column (10 to 18)
             x = gap/2; // Fixed width for the right column
@@ -74,10 +81,12 @@ void GUI::drawPlayers(std::vector<Player> players) {
         }
 
         // Create a colored circle for the player
+        // צור עיגול צבעוני עבור השחקן
         sf::CircleShape playerBall(15); // Radius of 15 pixels
+        // השתמש בצבע הראשי
         playerBall.setFillColor(player.getColor()); // Use the primary color
         playerBall.setPosition(x, y); // Set position based on calculated x and y
-
+        // צייר את כדור השחקן
         window.draw(playerBall); // Draw the player ball
     }   
 }
